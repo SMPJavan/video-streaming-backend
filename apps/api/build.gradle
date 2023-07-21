@@ -1,0 +1,96 @@
+import io.micronaut.gradle.docker.tasks.BuildLayersTask
+
+plugins {
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("io.micronaut.application") version "4.0.0"
+    id("io.micronaut.aot") version "4.0.0"
+}
+
+version = "0.1"
+group = "ssp.video.stream"
+
+repositories {
+    maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+        mavenContent { snapshotsOnly() }
+    }
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
+    implementation("io.micronaut.aws:micronaut-aws-apigateway")
+    implementation("io.micronaut.aws:micronaut-aws-lambda-events-serde")
+    implementation("io.micronaut.crac:micronaut-crac")
+    implementation("io.micronaut.serde:micronaut-serde-jackson")
+    implementation("io.micronaut.aws:micronaut-aws-sdk-v2")
+    implementation("software.amazon.awssdk:dynamodb")
+    implementation("software.amazon.awssdk:s3")
+    implementation 'com.amazonaws:aws-java-sdk-s3'
+    implementation ("jakarta.validation:jakarta.validation-api:3.0.2")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    implementation 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+    testImplementation("io.micronaut:micronaut-http-client")
+    testImplementation 'org.mockito:mockito-core:2.1.0'
+    testImplementation "io.micronaut:micronaut-http-server-netty"
+    runtimeOnly("org.yaml:snakeyaml")
+}
+
+
+application {
+    mainClass.set("ssp.video.stream.Application")
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
+}
+
+graalvmNative.toolchainDetection = false
+micronaut {
+    runtime("lambda_java")
+    testRuntime("junit5")
+    nativeLambda {
+        lambdaRuntimeClassName = "io.micronaut.function.aws.runtime.MicronautLambdaRuntime"
+    }
+    processing {
+        incremental(true)
+        annotations("ssp.video.stream.*")
+    }
+    aot {
+    // Please review carefully the optimizations enabled below
+    // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
+        optimizeServiceLoading = false
+        convertYamlToJava = false
+        precomputeOperations = true
+        cacheEnvironment = true
+        optimizeClassLoading = true
+        deduceEnvironment = true
+        optimizeNetty = true
+    }
+}
+
+tasks.named("dockerfileNative") {
+    baseImage = "amazonlinux:2"
+    args(
+        "-XX:MaximumHeapSizePercent=80",
+        "-Dio.netty.allocator.numDirectArenas=0",
+        "-Dio.netty.noPreferDirect=true"
+    )
+}
+
+sourceSets {
+    integration {
+        java.srcDir "$projectDir/src/integration/java"
+        resources.srcDir "$projectDir/src/integration/resources"
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
+    }
+}
+
+configurations {
+    integrationImplementation.extendsFrom testImplementation
+    integrationAnnotationProcessor.extendsFrom testAnnotationProcessor
+    integrationRuntime.extendsFrom testRuntime
+}

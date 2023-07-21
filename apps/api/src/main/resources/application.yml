@@ -1,0 +1,6 @@
+dynamodb:
+  video-details:
+    table-name: 'video_details-int'
+s3:
+  videos:
+    bucket: 'ssp-sandbox-video-stream-video-store-default'
