@@ -17,7 +17,7 @@ import java.util.UUID;
 @Singleton
 public class VideoDetailsRepository {
 
-    private static Logger LOG = LoggerFactory.getLogger(VideoDetailsRepository.class);
+    private static final Logger LOG = LoggerFactory.getLogger(VideoDetailsRepository.class);
 
     private final DynamoDBConnection dynamoDBConnection;
     private final DynamoConfiguration dynamoConfiguration;
