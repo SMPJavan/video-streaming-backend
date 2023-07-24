@@ -6,7 +6,6 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
-import ssp.video.stream.repository.DynamoDBConnection;
 
 import java.util.Map;
 
@@ -72,5 +71,21 @@ public class DynamoDBConnectionTest {
         DynamoDBConnection dynamoDBConnection = new DynamoDBConnection(dynamoDBClient);
         var result = dynamoDBConnection.getItem(partitionKeyName, partitionKeyValue, tableName);
         assertFalse(result.isPresent());
+    }
+
+    @Test
+    void should_save_item() {
+        String partitionKeyName = "partKey";
+        String partitionKeyValue = "123";
+        String tableName = "testTable";
+        var data = Map.of(partitionKeyName, AttributeValue.builder().s(partitionKeyValue).build());
+        DynamoDbClient dynamoDBClient = mock(DynamoDbClient.class);
+        GetItemResponse getItemResponse = mock(GetItemResponse.class);
+        doReturn(data).when(getItemResponse).item();
+        doReturn(true).when(getItemResponse).hasItem();
+        doReturn(getItemResponse).when(dynamoDBClient).getItem(any(GetItemRequest.class));
+        DynamoDBConnection dynamoDBConnection = new DynamoDBConnection(dynamoDBClient);
+        var result = dynamoDBConnection.saveItem(data, tableName);
+        assertEquals(data, result);
     }
 }

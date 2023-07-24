@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import ssp.video.stream.configuration.DynamoConfiguration;
 import ssp.video.stream.controller.data.VideoDetails;
-import ssp.video.stream.repository.DynamoDBConnection;
-import ssp.video.stream.repository.VideoDetailsRepository;
 
 import java.util.Map;
 import java.util.Optional;
@@ -24,12 +22,14 @@ public class VideoDetailsRepositoryTest {
         String tableName = "video_details";
         DynamoDBConnection dynamoDBConnection = mock(DynamoDBConnection.class);
         DynamoConfiguration dynamoConfiguration = mock(DynamoConfiguration.class);
+        DynamoDBMapper dynamoDBMapper = mock(DynamoDBMapper.class);
         DynamoConfiguration.VideoDetails videoDetailsConfig = mock(DynamoConfiguration.VideoDetails.class);
-        VideoDetailsRepository repository = new VideoDetailsRepository(dynamoDBConnection, dynamoConfiguration);
+        VideoDetailsRepository repository = new VideoDetailsRepository(dynamoDBConnection, dynamoConfiguration, dynamoDBMapper);
         doReturn(videoDetailsConfig).when(dynamoConfiguration).getVideoDetails();
         doReturn(tableName).when(videoDetailsConfig).getTableName();
         var videoDetailsData = Map.of("videoId", AttributeValue.builder().s(videoId).build());
         doReturn(Optional.of(videoDetailsData)).when(dynamoDBConnection).getItem("videoId", videoId, tableName);
+        doReturn(videoId).when(dynamoDBMapper).getString(videoDetailsData, "videoId");
         VideoDetails videoDetails = repository.getVideoDetails(videoId);
         assertEquals(videoId, videoDetails.getId());
     }
@@ -40,8 +40,9 @@ public class VideoDetailsRepositoryTest {
         String tableName = "video_details";
         DynamoDBConnection dynamoDBConnection = mock(DynamoDBConnection.class);
         DynamoConfiguration dynamoConfiguration = mock(DynamoConfiguration.class);
+        DynamoDBMapper dynamoDBMapper = mock(DynamoDBMapper.class);
         DynamoConfiguration.VideoDetails videoDetailsConfig = mock(DynamoConfiguration.VideoDetails.class);
-        VideoDetailsRepository repository = new VideoDetailsRepository(dynamoDBConnection, dynamoConfiguration);
+        VideoDetailsRepository repository = new VideoDetailsRepository(dynamoDBConnection, dynamoConfiguration, dynamoDBMapper);
         doReturn(videoDetailsConfig).when(dynamoConfiguration).getVideoDetails();
         doReturn(tableName).when(videoDetailsConfig).getTableName();
         doReturn(Optional.empty()).when(dynamoDBConnection).getItem("videoId", videoId, tableName);

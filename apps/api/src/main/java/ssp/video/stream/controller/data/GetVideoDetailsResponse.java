@@ -7,8 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-
 @Data
 @Builder
 @NoArgsConstructor
@@ -16,6 +14,6 @@ import java.util.Set;
 @Introspected
 @Serdeable.Deserializable
 @Serdeable.Serializable
-public class VideosSetResponse {
-    Set<VideoDetails> videoDetailsSet;
+public class GetVideoDetailsResponse {
+    VideoDetails videoDetails;
 }

@@ -14,6 +14,6 @@ import lombok.NoArgsConstructor;
 @Introspected
 @Serdeable.Deserializable
 @Serdeable.Serializable
-public class VideoDetailsResponse {
+public class PostVideoDetailsRequest {
     VideoDetails videoDetails;
 }

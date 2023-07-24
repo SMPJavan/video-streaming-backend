@@ -14,8 +14,7 @@ import lombok.NoArgsConstructor;
 @Introspected
 @Serdeable.Deserializable
 @Serdeable.Serializable
-public class VideoDetails {
-    String id;
-    String title;
-    String description;
+public class PostVideoDetailsResponse {
+    String uploadURL;
+    VideoDetails videoDetails;
 }

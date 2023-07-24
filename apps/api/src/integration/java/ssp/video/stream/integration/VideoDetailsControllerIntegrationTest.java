@@ -13,8 +13,9 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
-import ssp.video.stream.controller.data.VideoDetailsResponse;
+import ssp.video.stream.controller.data.GetVideoDetailsResponse;
 import ssp.video.stream.repository.DynamoDBConnection;
+import ssp.video.stream.repository.S3Connection;
 
 import java.util.Map;
 import java.util.Optional;
@@ -25,12 +26,17 @@ import static org.mockito.Mockito.mock;
 
 @MicronautTest
 @Property(name = "dynamodb.video-details.table-name", value = VideoDetailsControllerIntegrationTest.VIDEO_DETAILS_TABLE_NAME)
+@Property(name = "s3.videos.bucket", value = VideoDetailsControllerIntegrationTest.UPLOAD_BUCKET_NAME)
 public class VideoDetailsControllerIntegrationTest {
 
     public static final String VIDEO_DETAILS_TABLE_NAME = "video_details";
+    public static final String UPLOAD_BUCKET_NAME = "test-bucket";
 
     @Inject
     DynamoDBConnection dynamoDBConnection;
+
+    @Inject
+    S3Connection s3Connection;
 
     @Inject
     @Client("/")
@@ -42,10 +48,10 @@ public class VideoDetailsControllerIntegrationTest {
         var videoDetailsData = Map.of("videoId", AttributeValue.builder().s(videoId).build());
         doReturn(Optional.of(videoDetailsData)).when(dynamoDBConnection).getItem("videoId", videoId, VIDEO_DETAILS_TABLE_NAME);
         HttpRequest request = HttpRequest.GET("/videos/" + videoId);
-        HttpResponse<VideoDetailsResponse> result = client.toBlocking().exchange(request, Argument.of(VideoDetailsResponse.class), Argument.STRING);
+        HttpResponse<GetVideoDetailsResponse> result = client.toBlocking().exchange(request, Argument.of(GetVideoDetailsResponse.class), Argument.STRING);
         assertEquals(HttpStatus.OK, result.getStatus());
-        assertTrue(result.getBody(VideoDetailsResponse.class).isPresent());
-        VideoDetailsResponse responseBody = result.getBody(VideoDetailsResponse.class).get();
+        assertTrue(result.getBody(GetVideoDetailsResponse.class).isPresent());
+        GetVideoDetailsResponse responseBody = result.getBody(GetVideoDetailsResponse.class).get();
         assertEquals(videoId, responseBody.getVideoDetails().getId());
     }
 
@@ -63,5 +69,11 @@ public class VideoDetailsControllerIntegrationTest {
     @MockBean(DynamoDBConnection.class)
     public DynamoDBConnection dynamoDBConnection() {
         return mock(DynamoDBConnection.class);
+    }
+
+
+    @MockBean(S3Connection.class)
+    public S3Connection s3Connection() {
+        return mock(S3Connection.class);
     }
 }
