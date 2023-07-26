@@ -1,6 +1,6 @@
 dynamodb:
   video-details:
-    table-name: 'video_details-int'
+    table-name: 'table'
 s3:
   videos:
-    bucket: 'ssp-sandbox-video-stream-video-store-int'
+    bucket: 'bucket'

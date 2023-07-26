@@ -1,0 +1,4 @@
+rootProject.name = 'apps'
+include 'common'
+include 'video-upload-event-publisher'
+include 'api'

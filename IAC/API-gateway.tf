@@ -29,6 +29,7 @@ resource "aws_api_gateway_integration" "lambda_root" {
 resource "aws_api_gateway_deployment" "video-stream-api" {
   rest_api_id = aws_api_gateway_rest_api.video-stream-api.id
   stage_name = "default"
+  depends_on = [aws_api_gateway_rest_api.video-stream-api]
 }
 
 output "base_url" {

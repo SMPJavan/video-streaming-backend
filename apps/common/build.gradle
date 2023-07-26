@@ -1,0 +1,33 @@
+plugins {
+    id 'java-library'
+}
+
+group = "ssp.video.stream"
+version = "1.0-SNAPSHOT"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor("io.micronaut:micronaut-inject-java:2.1.4")
+    implementation("io.micronaut:micronaut-core:4.0.1")
+    implementation("io.micronaut:micronaut-inject:4.0.1")
+    implementation 'org.projectlombok:lombok:1.18.22'
+    implementation("software.amazon.awssdk:eventbridge:2.20.110")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
+    testImplementation(platform("org.junit:junit-bom:5.9.1"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
+    testImplementation( "org.mockito:mockito-core:5.4.0")
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
+}
+
+tasks.test {
+    useJUnitPlatform()
+}

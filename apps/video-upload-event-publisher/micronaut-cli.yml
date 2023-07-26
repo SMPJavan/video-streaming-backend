@@ -1,0 +1,6 @@
+applicationType: function
+defaultPackage: ssp.video.stream
+testFramework: junit
+sourceLanguage: java
+buildTool: gradle
+features: [app-name, aws-lambda, aws-lambda-events-serde, aws-lambda-handler-function, gradle, http-client-test, java, junit, logback, micronaut-build, properties, readme, serialization-jackson, shade, snapstart, x86]

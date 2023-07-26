@@ -1,0 +1,7 @@
+micronaut:
+  application:
+    name: video-upload-event-publisher
+
+eventbridge:
+  source: video-upload-event-publisher
+  bus-name: events-bus

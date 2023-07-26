@@ -3,9 +3,9 @@ locals {
   s3_origin_id = "video-stream-cloudfront-dist${local.environmentSuffix}"
 }
 
-resource "aws_cloudfront_origin_access_control" "cloudfront_s3_oac" {
-  name                              = "CloudFront S3 OAC"
-  description                       = "Cloud Front S3 OAC"
+resource "aws_cloudfront_origin_access_control" "cloudfront_s3_video_store_oac" {
+  name                              = "CloudFront S3 Video Store OAC ${terraform.workspace}"
+  description                       = "Cloud Front S3 Video Store OAC ${terraform.workspace}"
   origin_access_control_origin_type = "s3"
   signing_behavior                  = "always"
   signing_protocol                  = "sigv4"
@@ -16,7 +16,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
     domain_name = aws_s3_bucket.video_store.bucket_regional_domain_name
     origin_id   = local.s3_origin_id
-    origin_access_control_id = aws_cloudfront_origin_access_control.cloudfront_s3_oac.id
+    origin_access_control_id = aws_cloudfront_origin_access_control.cloudfront_s3_video_store_oac.id
   }
 
 
