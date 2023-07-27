@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.eventbridge.EventBridgeClient;
 import ssp.video.stream.configuration.EventBridgeConfiguration;
-import ssp.video.stream.events.EventPublisher;
+import ssp.video.stream.eventbridge.common.EventPublisher;
 import ssp.video.stream.events.payloads.VideoUploadedEvent;
 
 @Singleton

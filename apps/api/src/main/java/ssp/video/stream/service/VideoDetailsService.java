@@ -3,7 +3,7 @@ package ssp.video.stream.service;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ssp.video.stream.controller.data.VideoDetails;
+import ssp.video.stream.data.VideoDetails;
 import ssp.video.stream.repository.VideoDetailsRepository;
 import ssp.video.stream.repository.VideoRepository;
 

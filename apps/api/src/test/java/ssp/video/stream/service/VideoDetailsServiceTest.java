@@ -1,7 +1,7 @@
 package ssp.video.stream.service;
 
 import org.junit.jupiter.api.Test;
-import ssp.video.stream.controller.data.VideoDetails;
+import ssp.video.stream.data.VideoDetails;
 import ssp.video.stream.repository.VideoDetailsRepository;
 import ssp.video.stream.repository.VideoRepository;
 

@@ -1,0 +1,3 @@
+metadata:
+  enrich:
+    table-name: video_details

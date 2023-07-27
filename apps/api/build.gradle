@@ -28,6 +28,9 @@ dependencies {
     implementation("software.amazon.awssdk:dynamodb")
     implementation("software.amazon.awssdk:s3")
     implementation ("jakarta.validation:jakarta.validation-api:3.0.2")
+    implementation project(":common")
+    implementation project(":eventbridge-common")
+    implementation project(":dynamodb-common")
     runtimeOnly("ch.qos.logback:logback-classic")
     implementation 'org.projectlombok:lombok:1.18.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'

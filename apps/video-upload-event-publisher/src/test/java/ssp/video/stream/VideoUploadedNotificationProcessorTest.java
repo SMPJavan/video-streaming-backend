@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import ssp.video.stream.configuration.EventBridgeConfiguration;
-import ssp.video.stream.events.EventPublisher;
+import ssp.video.stream.eventbridge.common.EventPublisher;
 import ssp.video.stream.events.payloads.VideoUploadedEvent;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -4,6 +4,7 @@ import io.micronaut.http.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ssp.video.stream.controller.data.*;
+import ssp.video.stream.data.VideoDetails;
 import ssp.video.stream.service.VideoDetailsService;
 
 @Controller("videos")

@@ -12,12 +12,12 @@ import io.micronaut.test.annotation.MockBean;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
-import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import ssp.video.stream.controller.data.GetVideoDetailsResponse;
-import ssp.video.stream.repository.DynamoDBConnection;
+import ssp.video.stream.data.VideoDetails;
+import ssp.video.stream.dynamodb.connection.DynamoDBConnection;
+import ssp.video.stream.dynamodb.mapping.VideoDetailsMapper;
 import ssp.video.stream.repository.S3Connection;
 
-import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,6 +33,9 @@ public class VideoDetailsControllerIntegrationTest {
     public static final String UPLOAD_BUCKET_NAME = "test-bucket";
 
     @Inject
+    VideoDetailsMapper videoDetailsMapper;
+
+    @Inject
     DynamoDBConnection dynamoDBConnection;
 
     @Inject
@@ -45,8 +48,8 @@ public class VideoDetailsControllerIntegrationTest {
     @Test
     void should_get_video_details_for_id() {
         var videoId = "123";
-        var videoDetailsData = Map.of("videoId", AttributeValue.builder().s(videoId).build());
-        doReturn(Optional.of(videoDetailsData)).when(dynamoDBConnection).getItem("videoId", videoId, VIDEO_DETAILS_TABLE_NAME);
+        var videoDetailsData = VideoDetails.builder().id(videoId).build();
+        doReturn(Optional.of(videoDetailsData)).when(dynamoDBConnection).getItem("videoId", videoId, VIDEO_DETAILS_TABLE_NAME, videoDetailsMapper);
         HttpRequest request = HttpRequest.GET("/videos/" + videoId);
         HttpResponse<GetVideoDetailsResponse> result = client.toBlocking().exchange(request, Argument.of(GetVideoDetailsResponse.class), Argument.STRING);
         assertEquals(HttpStatus.OK, result.getStatus());

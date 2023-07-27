@@ -20,3 +20,8 @@ data "aws_iam_policy_document" "eventbridge_publish_to_sqs_policy" {
     resources = [aws_sqs_queue.metadata_build_queue.arn]
   }
 }
+
+resource "aws_lambda_event_source_mapping" "event_source_mapping" {
+  event_source_arn = aws_sqs_queue.metadata_build_queue.arn
+  function_name    = aws_lambda_function.video-metadata-enricher.arn
+}

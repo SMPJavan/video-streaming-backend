@@ -3,7 +3,7 @@ package ssp.video.stream.controller;
 import org.junit.jupiter.api.Test;
 import ssp.video.stream.controller.data.PostVideoDetailsRequest;
 import ssp.video.stream.controller.data.PostVideoDetailsResponse;
-import ssp.video.stream.controller.data.VideoDetails;
+import ssp.video.stream.data.VideoDetails;
 import ssp.video.stream.service.VideoDetailsService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

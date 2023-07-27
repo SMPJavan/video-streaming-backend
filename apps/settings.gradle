@@ -2,5 +2,7 @@ rootProject.name = 'apps'
 include 'common'
 include 'video-upload-event-publisher'
 include 'api'
-include 'micronaut-common'
+include 'eventbridge-common'
+include 'enrich-video-details-with-metadata'
+include 'dynamodb-common'
 
