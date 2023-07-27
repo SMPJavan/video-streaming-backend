@@ -21,6 +21,7 @@ dependencies {
     annotationProcessor("io.micronaut.validation:micronaut-validation-processor")
     annotationProcessor("io.micronaut:micronaut-inject-java:2.1.4")
     implementation project(':common')
+    implementation project(':micronaut-common')
     implementation 'io.micronaut.aws:micronaut-aws-ua:3.15.0'
     implementation("com.amazonaws:aws-lambda-java-events:3.11.0")
     implementation("io.micronaut.aws:micronaut-aws-sdk-v2")
