@@ -14,15 +14,15 @@ resource "aws_cloudfront_origin_access_control" "cloudfront_s3_video_store_oac" 
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
 
-    domain_name = aws_s3_bucket.video_store.bucket_regional_domain_name
-    origin_id   = local.s3_origin_id
+    domain_name              = aws_s3_bucket.video_store.bucket_regional_domain_name
+    origin_id                = local.s3_origin_id
     origin_access_control_id = aws_cloudfront_origin_access_control.cloudfront_s3_video_store_oac.id
   }
 
 
-  enabled             = true
-  is_ipv6_enabled     = true
-  comment             = "video streaming S3 CloudFront distribution for env: ${terraform.workspace}"
+  enabled         = true
+  is_ipv6_enabled = true
+  comment         = "video streaming S3 CloudFront distribution for env: ${terraform.workspace}"
 
 
 
