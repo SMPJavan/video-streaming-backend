@@ -59,10 +59,10 @@ resource "aws_api_gateway_integration" "post_video_details_integration" {
 }
 
 resource "aws_api_gateway_deployment" "video-stream-api" {
-  rest_api_id = aws_api_gateway_rest_api.video-stream-api.id
-  stage_name  = "default"
+  rest_api_id       = aws_api_gateway_rest_api.video-stream-api.id
+  stage_name        = "default"
   stage_description = md5(file("API-gateway.tf"))
-  depends_on  = [aws_api_gateway_rest_api.video-stream-api]
+  depends_on        = [aws_api_gateway_rest_api.video-stream-api]
 
   lifecycle {
     create_before_destroy = true

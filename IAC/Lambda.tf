@@ -1,30 +1,34 @@
-data "aws_s3_object" "stream_api_package" {
+data "aws_s3_bucket" "app_store_bucket" {
   bucket = "ssp-sandbox-video-stream-apps-store"
+}
+
+data "aws_s3_object" "stream_api_package" {
+  bucket = data.aws_s3_bucket.app_store_bucket.bucket
   key    = "api-0.1-all.jar"
 }
 
 data "aws_s3_object" "stream_video_upload_event_publisher_package" {
-  bucket = "ssp-sandbox-video-stream-apps-store"
+  bucket = data.aws_s3_bucket.app_store_bucket.bucket
   key    = "video-upload-event-publisher-0.1-all.jar"
 }
 
 data "aws_s3_object" "stream_video_enrich_metadata_package" {
-  bucket = "ssp-sandbox-video-stream-apps-store"
+  bucket = data.aws_s3_bucket.app_store_bucket.bucket
   key    = "enrich-video-details-with-metadata-0.1-all.jar"
 }
 
 data "aws_s3_object" "api_authorizer_package" {
-  bucket = "ssp-sandbox-video-stream-apps-store"
+  bucket = data.aws_s3_bucket.app_store_bucket.bucket
   key    = "api-authorizer-0.1-all.jar"
 }
 
 data "aws_s3_object" "video_details_updated_event_publisher_package" {
-  bucket = "ssp-sandbox-video-stream-apps-store"
+  bucket = data.aws_s3_bucket.app_store_bucket.bucket
   key    = "video-details-updated-event-publisher-0.1-all.jar"
 }
 
 data "aws_s3_object" "move_video_to_video_store_package" {
-  bucket = "ssp-sandbox-video-stream-apps-store"
+  bucket = data.aws_s3_bucket.app_store_bucket.bucket
   key    = "move-video-to-video-store-0.1-all.jar"
 }
 
@@ -50,8 +54,8 @@ resource "aws_lambda_function" "video-stream-api" {
 
   environment {
     variables = {
-      DYNAMODB_VIDEO_DETAILS_TABLE_NAME = "video_details${local.environmentSuffix}",
-      S3_VIDEOS_BUCKET                  = "ssp-sandbox-video-stream-video-upload-hold${local.environmentSuffix}"
+      DYNAMODB_VIDEO_DETAILS_TABLE_NAME = aws_dynamodb_table.video-details.name,
+      S3_VIDEOS_BUCKET                  = aws_s3_bucket.upload_hold.bucket
     }
   }
 }
@@ -71,7 +75,7 @@ resource "aws_lambda_function" "video-upload-event-publisher" {
 
   environment {
     variables = {
-      EVENTBRIDGE_BUS_NAME = "events${local.environmentSuffix}"
+      EVENTBRIDGE_BUS_NAME = aws_cloudwatch_event_bus.event_bus.name
     }
   }
 }
@@ -91,7 +95,7 @@ resource "aws_lambda_function" "video-metadata-enricher" {
 
   environment {
     variables = {
-      METADATA_ENRICH_TABLE_NAME = "video_details${local.environmentSuffix}"
+      METADATA_ENRICH_TABLE_NAME = aws_dynamodb_table.video-details.name
     }
   }
 }
@@ -111,7 +115,7 @@ resource "aws_lambda_function" "video-details-updated-event-publisher" {
 
   environment {
     variables = {
-      EVENTBRIDGE_BUS_NAME = "events${local.environmentSuffix}"
+      EVENTBRIDGE_BUS_NAME = aws_cloudwatch_event_bus.event_bus.name
     }
   }
 }
@@ -131,8 +135,9 @@ resource "aws_lambda_function" "move-video-to-video-store" {
 
   environment {
     variables = {
-      VIDEO_MOVE_SOURCE_BUCKET_NAME      = "ssp-sandbox-video-stream-video-upload-hold${local.environmentSuffix}"
-      VIDEO_MOVE_DESTINATION_BUCKET_NAME = "ssp-sandbox-video-stream-video-store${local.environmentSuffix}"
+      VIDEO_MOVE_SOURCE_BUCKET_NAME      = aws_s3_bucket.upload_hold.bucket
+      VIDEO_MOVE_DESTINATION_BUCKET_NAME = aws_s3_bucket.video_store.bucket
+      VIDEO_MOVE_DYNAMO_TABLE_NAME       = aws_dynamodb_table.video-details.name
     }
   }
 }
