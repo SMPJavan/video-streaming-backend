@@ -6,9 +6,9 @@ terraform {
     }
   }
   backend "s3" {
-    bucket         = "ssp-sandbox-video-stream-tf-state"
-    key            = "tf-state"
-    region         = "eu-west-2"
+    bucket = "ssp-sandbox-video-stream-tf-state"
+    key    = "tf-state"
+    region = "eu-west-2"
   }
 
   required_version = ">= 1.2.0"

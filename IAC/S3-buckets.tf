@@ -1,9 +1,9 @@
 resource "aws_s3_bucket" "video_store" {
-  bucket   = "ssp-sandbox-video-stream-video-store${local.environmentSuffix}"
+  bucket = "ssp-sandbox-video-stream-video-store${local.environmentSuffix}"
 }
 
 resource "aws_s3_bucket" "upload_hold" {
-  bucket   = "ssp-sandbox-video-stream-video-upload-hold${local.environmentSuffix}"
+  bucket = "ssp-sandbox-video-stream-video-upload-hold${local.environmentSuffix}"
 }
 
 resource "aws_s3_bucket_acl" "video_store" {
@@ -33,6 +33,17 @@ resource "aws_s3_bucket_ownership_controls" "upload_hold_s3_bucket_acl_ownership
 resource "aws_s3_bucket_policy" "cdn-cf-policy" {
   bucket = aws_s3_bucket.video_store.id
   policy = data.aws_iam_policy_document.video-store-cdn-cf-policy.json
+}
+
+resource "aws_s3_bucket_notification" "bucket_notification" {
+  bucket = aws_s3_bucket.upload_hold.id
+
+  lambda_function {
+    lambda_function_arn = aws_lambda_function.video-upload-event-publisher.arn
+    events              = ["s3:ObjectCreated:*"]
+  }
+
+  depends_on = [aws_lambda_permission.allow_bucket]
 }
 
 data "aws_iam_policy_document" "video-store-cdn-cf-policy" {
