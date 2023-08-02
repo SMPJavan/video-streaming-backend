@@ -1,0 +1,5 @@
+video:
+  move:
+    source-bucket-name: src_bucket
+    destination-bucket-name: dst_bucket
+    dynamo-table-name: videos

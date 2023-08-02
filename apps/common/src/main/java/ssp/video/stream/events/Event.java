@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ssp.video.stream.events.payloads.EventPayload;
+import ssp.video.stream.events.payloads.VideoDetailsUpdatedEvent;
 import ssp.video.stream.events.payloads.VideoUploadedEvent;
 
 import java.util.List;
@@ -27,6 +28,9 @@ public class Event<T extends EventPayload> {
     String region;
     List<String> resources;
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "detail-type")
-    @JsonSubTypes({ @JsonSubTypes.Type( value = VideoUploadedEvent.class, name = "VideoUploadedEvent" )})
+    @JsonSubTypes({
+            @JsonSubTypes.Type( value = VideoUploadedEvent.class, name = "VideoUploadedEvent" ),
+            @JsonSubTypes.Type( value = VideoDetailsUpdatedEvent.class, name = "VideoDetailsUpdatedEvent" )
+    })
     T detail;
 }

@@ -1,0 +1,12 @@
+micronaut:
+  application:
+    name: video-upload-event-publisher
+
+eventbridge:
+  source: video-upload-event-publisher
+  bus-name: events-bus
+
+jackson:
+  mapper:
+    accept-case-insensitive-properties: true
+    ACCEPT_CASE_INSENSITIVE_PROPERTIES: true

@@ -16,6 +16,7 @@ import ssp.video.stream.controller.data.GetVideoDetailsResponse;
 import ssp.video.stream.data.VideoDetails;
 import ssp.video.stream.dynamodb.connection.DynamoDBConnection;
 import ssp.video.stream.dynamodb.mapping.VideoDetailsMapper;
+import ssp.video.stream.dynamodb.mapping.adapter.ModelAttributeValueAdapter;
 import ssp.video.stream.repository.S3Connection;
 
 import java.util.Optional;
@@ -34,6 +35,9 @@ public class VideoDetailsControllerIntegrationTest {
 
     @Inject
     VideoDetailsMapper videoDetailsMapper;
+
+    @Inject
+    ModelAttributeValueAdapter modelAttributeValueAdapter;
 
     @Inject
     DynamoDBConnection dynamoDBConnection;

@@ -14,4 +14,5 @@ public class VideoDetails {
     String title;
     String description;
     Integer duration;
+    Boolean availableToStream;
 }

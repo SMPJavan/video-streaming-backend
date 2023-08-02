@@ -10,4 +10,7 @@ public interface MetadataEnrichConfiguration {
 
     @NotBlank
     String getTableName();
+
+    @NotBlank
+    String getS3BucketName();
 }

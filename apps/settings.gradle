@@ -5,4 +5,7 @@ include 'api'
 include 'eventbridge-common'
 include 'enrich-video-details-with-metadata'
 include 'dynamodb-common'
+include 'api-authorizer'
+include 'video-details-updated-event-publisher'
+include 'move-video-to-video-store'
 
