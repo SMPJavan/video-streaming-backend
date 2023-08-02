@@ -47,7 +47,7 @@ public class FunctionRequestHandler extends MicronautRequestHandler<SQSEvent, Vo
                 processor.process(message);
             }
         } catch (IOException e) {
-            return null;
+            throw new RuntimeException(e);
         }
         return null;
     }

@@ -1,3 +1,4 @@
 metadata:
   enrich:
     table-name: video_details
+    s3-bucket-name: bucket

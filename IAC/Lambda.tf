@@ -95,7 +95,8 @@ resource "aws_lambda_function" "video-metadata-enricher" {
 
   environment {
     variables = {
-      METADATA_ENRICH_TABLE_NAME = aws_dynamodb_table.video-details.name
+      METADATA_ENRICH_TABLE_NAME     = aws_dynamodb_table.video-details.name
+      METADATA_ENRICH_S3_BUCKET_NAME = aws_s3_bucket.upload_hold.bucket
     }
   }
 }
